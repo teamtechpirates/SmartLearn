@@ -1,0 +1,14 @@
+<!--<div *ngFor="let video of videoArray">
+    test
+<div class="item" >
+    <h2>{{video.title}}</h2>
+    <iframe class="video" width="640" height="360" src="//www.youtube.com/embed/{{video.videoId}}" frameborder="0" allowfullscreen></iframe>
+</div>
+</div>-->
+
+<div class="card-body" *ngFor="let video of videoArray">
+    <div class="iframe-container d-none d-lg-block">
+        <h1>{{video.title}}</h1>
+        <iframe width="500" height="360" src="https://www.youtube.com/embed/${{video.videoId}}" frameborder="0" ></iframe>
+    </div>
+</div>
