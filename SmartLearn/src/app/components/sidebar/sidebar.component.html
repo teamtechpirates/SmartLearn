@@ -1,0 +1,33 @@
+<div class="logo">
+    <a href="#" class="simple-text">
+        <div>
+            <img src="/assets/img/smart_learn_logo.png" style="height: 100px !important; width: 120px !important;"/>
+        </div>
+    </a>
+</div>
+<div class="sidebar-wrapper">
+    <ul class="nav">
+        <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
+            <a class="nav-link" [routerLink]="[menuItem.path]">
+                <i class="material-icons">{{menuItem.icon}}</i>
+                <p>{{menuItem.title}}</p>
+            </a>
+        </li>
+        <li routerLinkActive="active" class="nav-item">
+            <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Courses &nbsp;<i class="material-icons">library_books</i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-top-right" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item"  href="#" >ASE </a>
+                <a class="dropdown-item" href="#">Python</a>
+                <a class="dropdown-item" href="#">WEB Technologies</a>
+            </div>
+        </li>
+        <li routerLinkActive="active"  class=" nav-item">
+            <a class="nav-link">
+                <i class="material-icons">schedule</i>
+                <p>Quiz</p>
+            </a>
+        </li>
+    </ul>
+</div>
