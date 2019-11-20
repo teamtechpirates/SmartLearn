@@ -22,6 +22,7 @@ import {
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {DatePickerModule} from '@progress/kendo-angular-dateinputs';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 @NgModule({
     imports: [
         CommonModule,
@@ -36,7 +37,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
         MatTooltipModule,
         MatDatepickerModule,
         DatePickerModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatProgressSpinnerModule
     ],
   declarations: [
     DashboardComponent,

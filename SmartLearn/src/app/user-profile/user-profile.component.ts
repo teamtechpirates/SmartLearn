@@ -16,6 +16,7 @@ export class UserProfileComponent implements OnInit {
   ngOnInit() {
     this.authenticationService.currentUser().subscribe(res => {
       this.loggedUserObj = res;
+      console.log('logged user' , this.loggedUserObj)
     }, (err) => {
       console.log(err);
     });

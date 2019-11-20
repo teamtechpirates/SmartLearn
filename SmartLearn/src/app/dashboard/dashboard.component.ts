@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import * as Chartist from 'chartist';
+import {Router} from '@angular/router';
+import {FormBuilder} from '@angular/forms';
+import {AuthenticationService} from '../authentication.service';
+import {CourseByWeek} from '../syllabus/syllabus.component';
+import {GoogleService} from '../google.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,143 +12,88 @@ import * as Chartist from 'chartist';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
-  startAnimationForLineChart(chart){
-      let seq: any, delays: any, durations: any;
-      seq = 0;
-      delays = 80;
-      durations = 500;
+    loggedUserObj: any;
+    displayTopicFlag: string;
+    displayFlag: string;
+    knowledgeGraphData: any;
+    sylArray: SyllabusArray[] = [];
+    questionAnswers: RelatedQuestion[] = [];
+    relatedTutorials: RelatedTutorials[] = [];
+    relatedCertifications: RelatedCertifications[] = [];
 
-      chart.on('draw', function(data) {
-        if(data.type === 'line' || data.type === 'area') {
-          data.element.animate({
-            d: {
-              begin: 600,
-              dur: 700,
-              from: data.path.clone().scale(1, 0).translate(0, data.chartRect.height()).stringify(),
-              to: data.path.clone().stringify(),
-              easing: Chartist.Svg.Easing.easeOutQuint
-            }
-          });
-        } else if(data.type === 'point') {
-              seq++;
-              data.element.animate({
-                opacity: {
-                  begin: seq * delays,
-                  dur: durations,
-                  from: 0,
-                  to: 1,
-                  easing: 'ease'
-                }
-              });
-          }
-      });
+    constructor(private router: Router, private googleService: GoogleService ,
+                private formBuilder: FormBuilder , private authenticationService: AuthenticationService) { }
 
-      seq = 0;
-  };
-  startAnimationForBarChart(chart){
-      let seq2: any, delays2: any, durations2: any;
+    ngOnInit() {
+        debugger;
+        this.displayFlag = 'false';
+        this.authenticationService.currentUser().subscribe(res => {
+            this.loggedUserObj = res;
 
-      seq2 = 0;
-      delays2 = 80;
-      durations2 = 500;
-      chart.on('draw', function(data) {
-        if(data.type === 'bar'){
-            seq2++;
-            data.element.animate({
-              opacity: {
-                begin: seq2 * delays2,
-                dur: durations2,
-                from: 0,
-                to: 1,
-                easing: 'ease'
-              }
-            });
-        }
-      });
+            this.authenticationService.getUserSyllabus(this.loggedUserObj._id)
+                .subscribe(res => {
+                    console.log('syllabus res', res)
+                    let result = res;
+                    for (let item = 0; item < result.length; item++) {
+                        for( let m = 0; m < result[item].Syllabus.length; m++) {
+                            this.sylArray.push(result[item].Syllabus[m].courses);
+                        }
+                    }
+                    ;
+                    console.log('syllabusArray', this.sylArray);
+                });
+            console.log('logged user in dashboard comp' , this.loggedUserObj)
+        }, (err) => {
+            console.log(err);
+        });
+    }
+    getSyllabus() {
+        this.displayFlag = 'true';
+    }
+    getUserSyllabusById(syllabus) {
+        this.questionAnswers = [];
+        this.relatedTutorials = [];
+        debugger;
+                this.displayTopicFlag = 'true';
+                console.log('topic flag ', this.displayTopicFlag)
+                    this.googleService.getDetailsFromKnowledge(syllabus).subscribe(res => {
+                        this.knowledgeGraphData = res;
+                        console.log('knowledgeGraphData ::  ' , this.knowledgeGraphData);
+                            for (let j = 0; j < this.knowledgeGraphData.related_questions.length; j++ ) {
+                                let obj = new RelatedQuestion();
+                                let s = syllabus;
+                                obj.topic = s;
+                                obj.question = this.knowledgeGraphData.related_questions[j].question;
+                                obj.snippet = this.knowledgeGraphData.related_questions[j].snippet;
+                                this.questionAnswers.push(obj);
+                            };
+                            for (let m = 0; m < this.knowledgeGraphData.organic_results.length; m++ ) {
+                                let object = new RelatedTutorials();
+                                object.link = this.knowledgeGraphData.organic_results[m].link;
+                                object.title = this.knowledgeGraphData.organic_results[m].title;
+                                this.relatedTutorials.push(object);
+                            }
+                        },
+                        (err) => {console.log(err);
+                        });
+                console.log('this.questionAnswers ' , this.questionAnswers);
+    }
+}
+export class SyllabusArray {
+    courses: string;
+}
+export class RelatedQuestion {
+    topic: string
+    question: string;
+    snippet: string;
+}
 
-      seq2 = 0;
-  };
-  ngOnInit() {
-      /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
+export class RelatedTutorials {
+    title: string
+    link: string;
+}
 
-      const dataDailySalesChart: any = {
-          labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-          series: [
-              [12, 17, 7, 17, 23, 18, 38]
-          ]
-      };
-
-     const optionsDailySalesChart: any = {
-          lineSmooth: Chartist.Interpolation.cardinal({
-              tension: 0
-          }),
-          low: 0,
-          high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-          chartPadding: { top: 0, right: 0, bottom: 0, left: 0},
-      }
-
-      var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
-
-      this.startAnimationForLineChart(dailySalesChart);
-
-
-      /* ----------==========     Completed Tasks Chart initialization    ==========---------- */
-
-      const dataCompletedTasksChart: any = {
-          labels: ['12p', '3p', '6p', '9p', '12p', '3a', '6a', '9a'],
-          series: [
-              [230, 750, 450, 300, 280, 240, 200, 190]
-          ]
-      };
-
-     const optionsCompletedTasksChart: any = {
-          lineSmooth: Chartist.Interpolation.cardinal({
-              tension: 0
-          }),
-          low: 0,
-          high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-          chartPadding: { top: 0, right: 0, bottom: 0, left: 0}
-      }
-
-      var completedTasksChart = new Chartist.Line('#completedTasksChart', dataCompletedTasksChart, optionsCompletedTasksChart);
-
-      // start animation for the Completed Tasks Chart - Line Chart
-      this.startAnimationForLineChart(completedTasksChart);
-
-
-
-      /* ----------==========     Emails Subscription Chart initialization    ==========---------- */
-
-      var datawebsiteViewsChart = {
-        labels: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
-        series: [
-          [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]
-
-        ]
-      };
-      var optionswebsiteViewsChart = {
-          axisX: {
-              showGrid: false
-          },
-          low: 0,
-          high: 1000,
-          chartPadding: { top: 0, right: 5, bottom: 0, left: 0}
-      };
-      var responsiveOptions: any[] = [
-        ['screen and (max-width: 640px)', {
-          seriesBarDistance: 5,
-          axisX: {
-            labelInterpolationFnc: function (value) {
-              return value[0];
-            }
-          }
-        }]
-      ];
-      var websiteViewsChart = new Chartist.Bar('#websiteViewsChart', datawebsiteViewsChart, optionswebsiteViewsChart, responsiveOptions);
-
-      //start animation for the Emails Subscription Chart
-      this.startAnimationForBarChart(websiteViewsChart);
-  }
-
+export class RelatedCertifications {
+    title: string
+    link: string;
 }

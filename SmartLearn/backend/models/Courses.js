@@ -1,8 +1,7 @@
 var mongoose = require('mongoose');
 
 var CoursesSchema = new mongoose.Schema({
-    id: String,
-    email: String,
+    userId: String,
     courseList: [],
     updated_date: {type: Date, default: Date.now},
 });

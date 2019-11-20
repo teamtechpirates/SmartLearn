@@ -4,7 +4,10 @@ import { NotificationsComponent } from '../../notifications/notifications.compon
 import {CoursesComponent} from '../../courses/courses.component';
 import {VideotutorialsComponent} from '../../videotutorials/videotutorials.component';
 import {SyllabusComponent} from '../../syllabus/syllabus.component'
+import {DashboardComponent} from '../../dashboard/dashboard.component';
+
 export const AdminLayoutRoutes: Routes = [
+    { path: '',   component: DashboardComponent },
     { path: 'user-profile',   component: UserProfileComponent },
     { path: 'notifications',  component: NotificationsComponent },
     { path: 'courses',  component: CoursesComponent },

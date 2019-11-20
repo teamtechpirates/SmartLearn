@@ -14,6 +14,7 @@ const apiUrl = '/api';
 export class AuthenticationService {
 
   public loggedUser: any;
+  public registeredCourses: any;
   constructor(private http: HttpClient) { }
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
@@ -45,6 +46,13 @@ export class AuthenticationService {
           map(this.extractData),
           catchError(this.handleError));
     return  this.loggedUser;
+  }
+  getUserSyllabus(userId): Observable<any> {
+    const url = 'http://localhost:3000/api/getSyllabusByUserId/' + userId;
+    this.registeredCourses = this.http.get(url, httpOptions).pipe(
+        map(this.extractData),
+        catchError(this.handleError));
+    return  this.registeredCourses;
   }
   currentUser(): Observable<any> {
     return this.loggedUser;
