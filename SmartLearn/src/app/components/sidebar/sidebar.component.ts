@@ -13,11 +13,10 @@ export const ROUTES: RouteInfo[] = [
     { path: '/typography', title: 'Typography',  icon:'library_books', class: '' },
     { path: '/icons', title: 'Icons',  icon:'bubble_chart', class: '' },
     { path: '/notifications', title: 'Notifications',  icon:'notifications', class: '' },*/
-/*
-    { path: '/courses', title: 'Courses',  icon:'library_books', class: '' },
-*/
+
     { path: '/vtutorials', title: 'Video Tutorials',  icon:'ondemand_video', class: '' },
-    { path: '/syllabus', title : 'Syllabus' , icon:'menu_book' , class: ''}
+    { path: '/syllabus', title : 'Syllabus' , icon:'menu_book' , class: ''},
+    { path: '/courses', title: 'Courses',  icon:'library_books', class: '' },
 ];
 
 @Component({

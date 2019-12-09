@@ -23,6 +23,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {DatePickerModule} from '@progress/kendo-angular-dateinputs';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {FileUploadModule} from 'ng2-file-upload';
 @NgModule({
     imports: [
         CommonModule,
@@ -38,7 +39,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
         MatDatepickerModule,
         DatePickerModule,
         MatAutocompleteModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        FileUploadModule
     ],
   declarations: [
     DashboardComponent,

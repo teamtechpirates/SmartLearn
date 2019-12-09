@@ -4,6 +4,7 @@ import {DatePipe, formatDate} from '@angular/common';
 import {AuthenticationService} from '../authentication.service';
 import {SyllabusService} from '../syllabus.service';
 import {SyllabusArray} from '../dashboard/dashboard.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-syllabus',
@@ -24,7 +25,7 @@ export class SyllabusComponent implements OnInit {
   loggedUserObj: any;
   sylArray: SyllabusArr[] = [];
 
-  constructor(private syllabusService: SyllabusService , private authenticationService: AuthenticationService) { }
+  constructor(private syllabusService: SyllabusService , private router: Router , private authenticationService: AuthenticationService) { }
   ngOnInit() {
 
     this.authenticationService.currentUser().subscribe(res => {this.loggedUserObj = res;
@@ -71,6 +72,7 @@ export class SyllabusComponent implements OnInit {
         }, (err) => {
           console.log(err);
         });
+    this.router.navigate(['/']);
   }
   addNewCourseByWeek() {
     const obj = new CourseByWeek();

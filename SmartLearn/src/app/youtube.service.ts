@@ -36,7 +36,7 @@ export class YoutubeService {
   }
 
   getVideosForChanel(searchedCourse) {
-    const url = 'https://www.googleapis.com/youtube/v3/search?key=AIzaSyDQONZ6SzacEZR6G5mxg3qfKiS5IORtmRo&q=' + searchedCourse +
+    const url = 'https://www.googleapis.com/youtube/v3/search?key=AIzaSyBjXlYw5wy9J2oMCoNvInx85Pm1sm9CZs0&q=' + searchedCourse +
         '&order=viewCount&part=snippet &type=video&maxResults=10';
     debugger;
     return this.http.get(url).pipe(
